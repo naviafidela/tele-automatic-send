@@ -16,11 +16,17 @@ dp = Dispatcher(bot)
 async def send_random_message():
     while True:
         all_messages = msg_asupanmu_vip + msg_kontol_monster
-        # Pilih 3 link acak
-        selected_links = random.sample(all_messages, 3)
-        
-        # Kirimkan 3 link ke setiap channel
-        for channel in CHANNELS:
+        # Pastikan ada cukup link untuk dikirim ke semua channel
+        if len(CHANNELS) > len(all_messages) // 3:
+            print("Jumlah channel lebih banyak daripada kombinasi link yang tersedia.")
+            return
+
+        # Pilih 3 link acak untuk setiap channel
+        random.shuffle(all_messages)  # Acak urutan link
+        selected_links_per_channel = [all_messages[i:i + 3] for i in range(0, len(CHANNELS) * 3, 3)]
+
+        for idx, channel in enumerate(CHANNELS):
+            selected_links = selected_links_per_channel[idx]
             for link in selected_links:
                 try:
                     await bot.send_message(chat_id=channel, text=link, parse_mode=ParseMode.HTML)
