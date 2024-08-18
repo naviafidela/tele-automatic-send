@@ -1,4 +1,4 @@
-from telegram.update import Update
+from telegram import Update
 from telegram.ext import Updater, CommandHandler, CallbackContext
 from telegram.error import TelegramError
 from apscheduler.schedulers.background import BackgroundScheduler
