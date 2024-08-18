@@ -78,13 +78,12 @@ async def main():
     await application.run_polling()
 
 if __name__ == "__main__":
-    # Menggunakan event loop yang sudah ada
     loop = asyncio.get_event_loop()
-    loop.create_task(main())
     try:
-        loop.run_forever()
+        loop.run_until_complete(main())
     except KeyboardInterrupt:
         pass
     finally:
-        loop.close()
+        # Hentikan scheduler dan tutup loop
         scheduler.shutdown()
+        loop.close()
