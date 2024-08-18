@@ -27,18 +27,17 @@ async def send_random_message():
 
         for idx, channel in enumerate(CHANNELS):
             selected_links = selected_links_per_channel[idx]
-            for link in selected_links:
-                try:
-                    await bot.send_message(chat_id=channel, text=link, parse_mode=ParseMode.HTML)
-                    await asyncio.sleep(1)  # Tunggu sebentar antara pengiriman pesan
-                except Exception as e:
-                    print(f"Failed to send message to {channel}: {e}")
+            message_text = "\n".join(selected_links)  # Gabungkan 2 link dalam 1 pesan
+            try:
+                await bot.send_message(chat_id=channel, text=message_text, parse_mode=ParseMode.HTML)
+            except Exception as e:
+                print(f"Failed to send message to {channel}: {e}")
 
-        await asyncio.sleep(7200)  # Tunggu 2 jam sebelum mengirim pesan lagi
+        await asyncio.sleep(60)  # Tunggu 1 menit sebelum mengirim pesan lagi
 
 @dp.message_handler(commands=['start'])
 async def start_handler(message: types.Message):
-    await message.reply("Bot ini aktif dan mengirim pesan setiap 2 jam!")
+    await message.reply("Bot ini aktif dan mengirim pesan setiap menit!")
 
 async def on_startup(dp):
     asyncio.create_task(send_random_message())
