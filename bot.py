@@ -35,8 +35,8 @@ async def send_random_message():
                 print(f"Failed to send message to {channel}: {e}")
 
         # Countdown timer
-        for i in range(60, 0, -1):
-            sys.stdout.write(f"\rMengirim pesan berikutnya dalam: {i} detik")
+        for i in range(7200, 0, -1):
+            sys.stdout.write(f"\rSend the next message in: {i} second")
             sys.stdout.flush()
             time.sleep(1)
 
