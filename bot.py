@@ -1,7 +1,8 @@
 # bot.py
 import random
 import asyncio
-from aiogram import Bot, Dispatcher
+from aiogram import Bot, Dispatcher, types
+from aiogram.filters import Command
 from aiogram.utils import markdown as md
 from asupanmu_vip import msg_asupanmu_vip
 from kontol_monster import msg_kontol_monster
@@ -23,9 +24,11 @@ async def send_random_message():
                 print(f"Failed to send message to {channel}: {e}")
         await asyncio.sleep(60)  # Tunggu 1 menit
 
-@dp.message_handler(commands=['start'])
-async def send_welcome(message):
-    await message.reply("Bot ini aktif dan mengirim pesan setiap menit!")
+async def start_handler(message: types.Message):
+    await message.answer("Bot ini aktif dan mengirim pesan setiap menit!")
+
+# Daftarkan handler
+dp.router.message.filter(Command("start"))(start_handler)
 
 async def main():
     # Start the message sending task
