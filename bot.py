@@ -1,7 +1,8 @@
+import asyncio
 from telegram import Update
 from telegram.ext import Application, CommandHandler, CallbackContext
 from telegram.error import TelegramError
-from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.schedulers.asyncio import AsyncIOScheduler  # Import AsyncIOScheduler
 import logging
 import random
 import subprocess
@@ -24,9 +25,9 @@ logger = logging.getLogger(__name__)
 # Inisialisasi bot
 application = Application.builder().token(TOKEN).build()
 
-# Inisialisasi scheduler
-scheduler = BackgroundScheduler()
-scheduler.add_job(lambda: application.create_task(send_random_messages(application)), 'interval', minutes=1)
+# Inisialisasi scheduler dengan AsyncIOScheduler
+scheduler = AsyncIOScheduler()
+scheduler.add_job(lambda: asyncio.create_task(send_random_messages(application)), 'interval', minutes=1)
 scheduler.start()
 
 async def send_random_messages(application):
@@ -39,7 +40,6 @@ async def send_random_messages(application):
                 logger.info(f"Pesan terkirim ke {chat_id}: {message}")
     except TelegramError as e:
         logger.error(f"Terjadi kesalahan saat mengirim pesan: {e}")
-
 
 async def gitpull(update: Update, context: CallbackContext):
     try:
@@ -70,12 +70,10 @@ async def start(update: Update, context: CallbackContext):
 application.add_handler(CommandHandler('start', start))
 application.add_handler(CommandHandler('gitpull', gitpull))
 
-# Menjalankan bot
-application.run_polling()
+# Fungsi utama untuk menjalankan bot
+async def main():
+    # Mulai polling bot
+    await application.run_polling()
 
-try:
-    print("Bot dimulai. Tekan Ctrl+C untuk menghentikan.")
-    application.idle()
-except (KeyboardInterrupt, SystemExit):
-    scheduler.shutdown()
-    print("Scheduler dihentikan.")
+# Menjalankan loop asyncio
+asyncio.run(main())
