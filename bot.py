@@ -2,8 +2,8 @@
 import random
 import asyncio
 from aiogram import Bot, Dispatcher
-from aiogram.types import ParseMode
 from aiogram.utils import executor
+from aiogram.utils import markdown as md
 
 # Import data dari file lain
 from asupanmu_vip import msg_asupanmu_vip
@@ -21,7 +21,7 @@ async def send_random_message():
         message_text = "\n".join(messages)
         for channel in CHANNELS:
             try:
-                await bot.send_message(chat_id=channel, text=message_text, parse_mode=ParseMode.HTML)
+                await bot.send_message(chat_id=channel, text=message_text, parse_mode=md.ParseMode.HTML)
             except Exception as e:
                 print(f"Failed to send message to {channel}: {e}")
         await asyncio.sleep(60)  # Tunggu 1 menit
