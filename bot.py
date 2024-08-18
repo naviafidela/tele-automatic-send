@@ -15,14 +15,19 @@ dp = Dispatcher(bot)
 
 async def send_random_message():
     while True:
-        messages = random.sample(msg_asupanmu_vip + msg_kontol_monster, 3)
-        message_text = "\n".join(messages)
-        for channel in CHANNELS:
-            try:
-                await bot.send_message(chat_id=channel, text=message_text, parse_mode=ParseMode.HTML)
-            except Exception as e:
-                print(f"Failed to send message to {channel}: {e}")
-        await asyncio.sleep(60)  # Tunggu 1 menit
+        all_messages = msg_asupanmu_vip + msg_kontol_monster
+        # Pilih 3 link acak
+        selected_links = random.sample(all_messages, 3)
+        
+        for link in selected_links:
+            for channel in CHANNELS:
+                try:
+                    await bot.send_message(chat_id=channel, text=link, parse_mode=ParseMode.HTML)
+                except Exception as e:
+                    print(f"Failed to send message to {channel}: {e}")
+            await asyncio.sleep(1)  # Tunggu sebentar antara pengiriman pesan
+
+        await asyncio.sleep(60)  # Tunggu 1 menit sebelum mengirim pesan lagi
 
 @dp.message_handler(commands=['start'])
 async def start_handler(message: types.Message):
