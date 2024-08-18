@@ -1,6 +1,6 @@
 # channel.py
 CHANNELS = [
-    '@channel1',
-    '@channel2',
+    '@videy_viral',
+    '@videy_bokep_indo',
     # Tambahkan ID channel lain di sini
 ]
