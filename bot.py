@@ -26,7 +26,7 @@ application = Application.builder().token(TOKEN).build()
 
 # Inisialisasi scheduler
 scheduler = BackgroundScheduler()
-scheduler.add_job(lambda: application.create_task(send_random_messages(application)), 'interval', minutes=5)
+scheduler.add_job(lambda: application.create_task(send_random_messages(application)), 'interval', minutes=1)
 scheduler.start()
 
 async def send_random_messages(application):
