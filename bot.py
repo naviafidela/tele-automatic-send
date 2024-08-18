@@ -28,7 +28,7 @@ application = Application.builder().token(TOKEN).build()
 # Inisialisasi scheduler dengan AsyncIOScheduler
 scheduler = AsyncIOScheduler()
 
-async def send_random_messages(application):
+async def send_random_messages():
     try:
         # Pilih pesan secara acak
         selected_messages = random.sample(messages, NUM_MESSAGES_PER_RUN)
@@ -71,12 +71,20 @@ application.add_handler(CommandHandler('gitpull', gitpull))
 # Fungsi untuk menjalankan scheduler dan aplikasi bot
 async def main():
     # Mulai scheduler
-    scheduler.add_job(send_random_messages, args=[application], trigger='interval', minutes=1)
+    scheduler.add_job(send_random_messages, trigger='interval', minutes=1)
     scheduler.start()
 
     # Mulai polling bot
     await application.run_polling()
 
 if __name__ == "__main__":
-    # Memulai event loop asyncio
-    asyncio.run(main())
+    # Menggunakan event loop yang sudah ada
+    loop = asyncio.get_event_loop()
+    loop.create_task(main())
+    try:
+        loop.run_forever()
+    except KeyboardInterrupt:
+        pass
+    finally:
+        loop.close()
+        scheduler.shutdown()
