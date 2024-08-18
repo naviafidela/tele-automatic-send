@@ -2,10 +2,7 @@
 import random
 import asyncio
 from aiogram import Bot, Dispatcher
-from aiogram.utils import executor
 from aiogram.utils import markdown as md
-
-# Import data dari file lain
 from asupanmu_vip import msg_asupanmu_vip
 from kontol_monster import msg_kontol_monster
 from channel import CHANNELS
@@ -13,7 +10,7 @@ from channel import CHANNELS
 API_TOKEN = '7520123514:AAG8JcQ6H0zjV_eTtK2V84jR0J1cf9wq6lg'
 
 bot = Bot(token=API_TOKEN)
-dp = Dispatcher(bot)
+dp = Dispatcher()
 
 async def send_random_message():
     while True:
@@ -30,7 +27,11 @@ async def send_random_message():
 async def send_welcome(message):
     await message.reply("Bot ini aktif dan mengirim pesan setiap menit!")
 
+async def main():
+    # Start the message sending task
+    asyncio.create_task(send_random_message())
+    # Start polling
+    await dp.start_polling(bot)
+
 if __name__ == '__main__':
-    loop = asyncio.get_event_loop()
-    loop.create_task(send_random_message())
-    executor.start_polling(dp, skip_updates=True)
+    asyncio.run(main())
