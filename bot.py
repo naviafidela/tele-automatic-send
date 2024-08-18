@@ -2,7 +2,7 @@ import asyncio
 from telegram import Update
 from telegram.ext import Application, CommandHandler, CallbackContext
 from telegram.error import TelegramError
-from apscheduler.schedulers.asyncio import AsyncIOScheduler  # Import AsyncIOScheduler
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
 import logging
 import random
 import subprocess
@@ -44,8 +44,8 @@ async def send_random_messages(application):
 async def gitpull(update: Update, context: CallbackContext):
     try:
         # Menghentikan scheduler untuk melakukan git pull
-        scheduler.shutdown()
-        logger.info("Scheduler dihentikan.")
+        scheduler.pause()
+        logger.info("Scheduler dihentikan sementara.")
         
         # Melakukan git pull
         result = subprocess.run(['git', 'pull'], capture_output=True, text=True)
@@ -57,7 +57,7 @@ async def gitpull(update: Update, context: CallbackContext):
             logger.error(message)
 
         # Restart scheduler setelah git pull
-        scheduler.start()
+        scheduler.resume()
         await context.bot.send_message(chat_id=update.effective_chat.id, text=message)
     except Exception as e:
         logger.error(f"Terjadi kesalahan saat melakukan git pull: {e}")
@@ -70,10 +70,8 @@ async def start(update: Update, context: CallbackContext):
 application.add_handler(CommandHandler('start', start))
 application.add_handler(CommandHandler('gitpull', gitpull))
 
-# Fungsi utama untuk menjalankan bot
-async def main():
-    # Mulai polling bot
-    await application.run_polling()
-
-# Menjalankan loop asyncio
-asyncio.run(main())
+# Menjalankan aplikasi tanpa asyncio.run
+if __name__ == "__main__":
+    loop = asyncio.get_event_loop()
+    loop.create_task(application.run_polling())
+    loop.run_forever()
