@@ -1,4 +1,6 @@
 from aiogram import Bot, Dispatcher, types
+from aiogram.filters import Command
+from aiogram.utils import executor
 import asyncio
 import random
 import logging
@@ -19,7 +21,7 @@ logger = logging.getLogger(__name__)
 API_TOKEN = '7520123514:AAG8JcQ6H0zjV_eTtK2V84jR0J1cf9wq6lg'  # Token bot Anda
 
 bot = Bot(token=API_TOKEN)
-dp = Dispatcher(bot)
+dp = Dispatcher()
 
 async def send_random_messages():
     while True:
@@ -32,7 +34,7 @@ async def send_random_messages():
                 logger.error(f"Terjadi kesalahan saat mengirim pesan ke {channel}: {e}")
         await asyncio.sleep(60)  # Tunggu 1 menit sebelum mengirim pesan lagi
 
-@dp.message_handler(commands=['start'])
+@dp.message(Command('start'))
 async def start(message: types.Message):
     await message.reply("Halo! Bot ini aktif.")
 
@@ -40,7 +42,7 @@ async def main():
     # Jalankan tugas pengiriman pesan di latar belakang
     asyncio.create_task(send_random_messages())
     # Mulai polling
-    await dp.start_polling()
+    await dp.start_polling(bot)
 
 if __name__ == '__main__':
     asyncio.run(main())
