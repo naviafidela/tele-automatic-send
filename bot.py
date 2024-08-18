@@ -18,13 +18,13 @@ async def send_random_message():
         all_messages = msg_asupanmu_vip + msg_kontol_monster
         # Pilih 3 link acak
         selected_links = random.sample(all_messages, 3)
-
-        # Untuk setiap channel, kirimkan link yang berbeda
-        for idx, channel in enumerate(CHANNELS):
-            if idx < len(selected_links):
-                link = selected_links[idx]
+        
+        # Kirimkan 3 link ke setiap channel
+        for channel in CHANNELS:
+            for link in selected_links:
                 try:
                     await bot.send_message(chat_id=channel, text=link, parse_mode=ParseMode.HTML)
+                    await asyncio.sleep(1)  # Tunggu sebentar antara pengiriman pesan
                 except Exception as e:
                     print(f"Failed to send message to {channel}: {e}")
 
