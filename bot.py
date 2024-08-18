@@ -27,7 +27,7 @@ async def send_random_message():
 
         for idx, channel in enumerate(CHANNELS):
             selected_links = selected_links_per_channel[idx]
-            message_text = "\n\n".join(selected_links)  # Gabungkan 2 link dalam 1 pesan
+            message_text = "[!]**Source:** https://asupanmu.live\n\n".join(selected_links)  # Gabungkan 2 link dalam 1 pesan
             try:
                 await bot.send_message(chat_id=channel, text=message_text, parse_mode=ParseMode.HTML)
             except Exception as e:
