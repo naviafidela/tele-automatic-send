@@ -17,13 +17,13 @@ async def send_random_message():
     while True:
         all_messages = msg_asupanmu_vip + msg_kontol_monster
         # Pastikan ada cukup link untuk dikirim ke semua channel
-        if len(CHANNELS) > len(all_messages) // 3:
+        if len(CHANNELS) > len(all_messages) // 2:
             print("Jumlah channel lebih banyak daripada kombinasi link yang tersedia.")
             return
 
-        # Pilih 3 link acak untuk setiap channel
+        # Pilih 2 link acak untuk setiap channel
         random.shuffle(all_messages)  # Acak urutan link
-        selected_links_per_channel = [all_messages[i:i + 3] for i in range(0, len(CHANNELS) * 3, 3)]
+        selected_links_per_channel = [all_messages[i:i + 2] for i in range(0, len(CHANNELS) * 2, 2)]
 
         for idx, channel in enumerate(CHANNELS):
             selected_links = selected_links_per_channel[idx]
