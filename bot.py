@@ -5,16 +5,18 @@ from apscheduler.schedulers.background import BackgroundScheduler
 import logging
 import random
 import subprocess
-from asupanmu import messages_asupanmu
-from jav import messages_jav
 from channel import CHANNELS
 
+from asupanmu_vip import msg_asupanmu_vip
+from kontol_monster import msg_kontol_monster
+
+
 # Gabungkan pesan dari kedua file
-messages = messages_asupanmu + messages_jav
+messages = msg_asupanmu_vip + msg_kontol_monster
 
 # Konfigurasi
 TOKEN = 'YOUR_BOT_TOKEN'  # Ganti dengan token bot Anda
-NUM_MESSAGES_PER_RUN = 2  # Jumlah pesan yang dikirim setiap interval
+NUM_MESSAGES_PER_RUN = 3  # Jumlah pesan yang dikirim setiap interval
 
 # Konfigurasi logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
