@@ -1,6 +1,8 @@
 # bot.py
 import random
 import asyncio
+import sys
+import time
 from aiogram import Bot, Dispatcher, types
 from aiogram.utils import executor
 from aiogram.types import ParseMode
@@ -16,24 +18,29 @@ dp = Dispatcher(bot)
 async def send_random_message():
     while True:
         all_messages = msg_asupanmu_vip + msg_kontol_monster
-        # Pastikan ada cukup link untuk dikirim ke semua channel
-        if len(CHANNELS) > len(all_messages) // 2:
-            print("Jumlah channel lebih banyak daripada kombinasi link yang tersedia.")
+
+        if len(all_messages) < len(CHANNELS) * 2:
+            print("Jumlah link tidak cukup untuk semua channel.")
             return
 
-        # Pilih 2 link acak untuk setiap channel
-        random.shuffle(all_messages)  # Acak urutan link
+        random.shuffle(all_messages)
         selected_links_per_channel = [all_messages[i:i + 2] for i in range(0, len(CHANNELS) * 2, 2)]
 
         for idx, channel in enumerate(CHANNELS):
             selected_links = selected_links_per_channel[idx]
-            message_text = "\n\n".join(selected_links)  # Gabungkan 2 link dalam 1 pesan
+            message_text = "\n\n".join(selected_links)
             try:
                 await bot.send_message(chat_id=channel, text=message_text, parse_mode=ParseMode.HTML)
             except Exception as e:
                 print(f"Failed to send message to {channel}: {e}")
 
-        await asyncio.sleep(60)  # Tunggu 1 menit sebelum mengirim pesan lagi
+        # Countdown timer
+        for i in range(60, 0, -1):
+            sys.stdout.write(f"\rMengirim pesan berikutnya dalam: {i} detik")
+            sys.stdout.flush()
+            time.sleep(1)
+
+        print()  # Pindah ke baris baru setelah countdown selesai
 
 @dp.message_handler(commands=['start'])
 async def start_handler(message: types.Message):
