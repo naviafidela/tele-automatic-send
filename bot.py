@@ -26,7 +26,7 @@ application = Application.builder().token(TOKEN).build()
 
 # Inisialisasi scheduler
 scheduler = BackgroundScheduler()
-scheduler.add_job(lambda: send_random_messages(application), 'interval', minutes=5)
+scheduler.add_job(lambda: application.create_task(send_random_messages(application)), 'interval', minutes=5)
 scheduler.start()
 
 async def send_random_messages(application):
@@ -39,6 +39,7 @@ async def send_random_messages(application):
                 logger.info(f"Pesan terkirim ke {chat_id}: {message}")
     except TelegramError as e:
         logger.error(f"Terjadi kesalahan saat mengirim pesan: {e}")
+
 
 async def gitpull(update: Update, context: CallbackContext):
     try:
