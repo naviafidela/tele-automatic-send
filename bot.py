@@ -15,7 +15,7 @@ from kontol_monster import msg_kontol_monster
 messages = msg_asupanmu_vip + msg_kontol_monster
 
 # Konfigurasi
-TOKEN = 'YOUR_BOT_TOKEN'  # Ganti dengan token bot Anda
+TOKEN = '7520123514:AAG8JcQ6H0zjV_eTtK2V84jR0J1cf9wq6lg'  # Ganti dengan token bot Anda
 NUM_MESSAGES_PER_RUN = 3  # Jumlah pesan yang dikirim setiap interval
 
 # Konfigurasi logging
