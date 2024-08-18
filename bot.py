@@ -1,5 +1,5 @@
 from telegram import Update
-from telegram.ext import Updater, CommandHandler, CallbackContext
+from telegram.ext import Application, CommandHandler, CallbackContext
 from telegram.error import TelegramError
 from apscheduler.schedulers.background import BackgroundScheduler
 import logging
@@ -9,7 +9,6 @@ from channel import CHANNELS
 
 from asupanmu_vip import msg_asupanmu_vip
 from kontol_monster import msg_kontol_monster
-
 
 # Gabungkan pesan dari kedua file
 messages = msg_asupanmu_vip + msg_kontol_monster
@@ -23,26 +22,25 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 logger = logging.getLogger(__name__)
 
 # Inisialisasi bot
-updater = Updater(token=TOKEN, use_context=True)
-bot = updater.bot
+application = Application.builder().token(TOKEN).build()
 
 # Inisialisasi scheduler
 scheduler = BackgroundScheduler()
-scheduler.add_job(lambda: send_random_messages(updater), 'interval', minutes=5)
+scheduler.add_job(lambda: send_random_messages(application), 'interval', minutes=5)
 scheduler.start()
 
-def send_random_messages(updater):
+async def send_random_messages(application):
     try:
-        # Pilih 2 pesan secara acak
+        # Pilih pesan secara acak
         selected_messages = random.sample(messages, NUM_MESSAGES_PER_RUN)
         for chat_id in CHANNELS:
             for message in selected_messages:
-                bot.send_message(chat_id=chat_id, text=message)
+                await application.bot.send_message(chat_id=chat_id, text=message)
                 logger.info(f"Pesan terkirim ke {chat_id}: {message}")
     except TelegramError as e:
         logger.error(f"Terjadi kesalahan saat mengirim pesan: {e}")
 
-def gitpull(update: Update, context: CallbackContext):
+async def gitpull(update: Update, context: CallbackContext):
     try:
         # Menghentikan scheduler untuk melakukan git pull
         scheduler.shutdown()
@@ -59,25 +57,24 @@ def gitpull(update: Update, context: CallbackContext):
 
         # Restart scheduler setelah git pull
         scheduler.start()
-        bot.send_message(chat_id=update.effective_chat.id, text=message)
+        await context.bot.send_message(chat_id=update.effective_chat.id, text=message)
     except Exception as e:
         logger.error(f"Terjadi kesalahan saat melakukan git pull: {e}")
-        bot.send_message(chat_id=update.effective_chat.id, text=f"Terjadi kesalahan: {e}")
+        await context.bot.send_message(chat_id=update.effective_chat.id, text=f"Terjadi kesalahan: {e}")
 
-def start(update: Update, context: CallbackContext):
-    update.message.reply_text('Halo! Bot ini aktif.')
+async def start(update: Update, context: CallbackContext):
+    await update.message.reply_text('Halo! Bot ini aktif.')
 
 # Menambahkan handler untuk perintah
-dispatcher = updater.dispatcher
-dispatcher.add_handler(CommandHandler('start', start))
-dispatcher.add_handler(CommandHandler('gitpull', gitpull))
+application.add_handler(CommandHandler('start', start))
+application.add_handler(CommandHandler('gitpull', gitpull))
 
 # Menjalankan bot
-updater.start_polling()
+application.run_polling()
 
 try:
     print("Bot dimulai. Tekan Ctrl+C untuk menghentikan.")
-    updater.idle()
+    application.idle()
 except (KeyboardInterrupt, SystemExit):
     scheduler.shutdown()
     print("Scheduler dihentikan.")
