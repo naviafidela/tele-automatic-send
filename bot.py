@@ -1,5 +1,4 @@
 from aiogram import Bot, Dispatcher, types
-from aiogram.utils import executor
 import asyncio
 import random
 import logging
@@ -37,9 +36,11 @@ async def send_random_messages():
 async def start(message: types.Message):
     await message.reply("Halo! Bot ini aktif.")
 
-if __name__ == '__main__':
+async def main():
     # Jalankan tugas pengiriman pesan di latar belakang
-    loop = asyncio.get_event_loop()
-    loop.create_task(send_random_messages())
+    asyncio.create_task(send_random_messages())
     # Mulai polling
-    executor.start_polling(dp)
+    await dp.start_polling()
+
+if __name__ == '__main__':
+    asyncio.run(main())
