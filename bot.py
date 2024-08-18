@@ -34,11 +34,11 @@ async def send_random_message():
                 except Exception as e:
                     print(f"Failed to send message to {channel}: {e}")
 
-        await asyncio.sleep(60)  # Tunggu 1 menit sebelum mengirim pesan lagi
+        await asyncio.sleep(7200)  # Tunggu 2 jam sebelum mengirim pesan lagi
 
 @dp.message_handler(commands=['start'])
 async def start_handler(message: types.Message):
-    await message.reply("Bot ini aktif dan mengirim pesan setiap menit!")
+    await message.reply("Bot ini aktif dan mengirim pesan setiap 2 jam!")
 
 async def on_startup(dp):
     asyncio.create_task(send_random_message())
