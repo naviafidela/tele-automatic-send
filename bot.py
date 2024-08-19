@@ -1,4 +1,3 @@
-# bot.py
 import random
 import asyncio
 import sys
@@ -7,15 +6,14 @@ from aiogram import Bot, Dispatcher, types
 from aiogram.utils import executor
 from aiogram.types import ParseMode
 from aiohttp import ClientTimeout
-from aiogram import Bot
 from asupanmu_vip import msg_asupanmu_vip
 from kontol_monster import msg_kontol_monster
 from channel import CHANNELS
 
 API_TOKEN = '7520123514:AAG8JcQ6H0zjV_eTtK2V84jR0J1cf9wq6lg'
 
-# Atur bot dengan timeout menggunakan ClientTimeout
-timeout = ClientTimeout(total=60)
+# Set timeout lebih lama
+timeout = ClientTimeout(total=120)
 bot = Bot(token=API_TOKEN, timeout=timeout)
 dp = Dispatcher(bot)
 
@@ -35,8 +33,9 @@ async def send_random_message():
             message_text = "\n\n".join(selected_links)
             try:
                 await bot.send_message(chat_id=channel, text=message_text, parse_mode=ParseMode.HTML)
-            except Exception as e:
-                print(f"Failed to send message to {channel}: {e}")
+            except Exception:
+                # Sembunyikan error dan lanjutkan
+                pass
 
         # Countdown timer
         for i in range(120, 0, -1):
