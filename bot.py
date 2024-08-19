@@ -45,7 +45,7 @@ async def send_random_message():
 
             # Tambahkan pesan "Message berhasil terkirim" ketika timer mencapai 1 detik
             if i == 1:
-                print("\nMessage berhasil terkirim")
+                print("\nMessage send successfully !")
 
         print()  # Pindah ke baris baru setelah countdown selesai
 
