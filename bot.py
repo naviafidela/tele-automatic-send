@@ -3,19 +3,20 @@ import random
 import asyncio
 import sys
 import time
-import aiohttp
 from aiogram import Bot, Dispatcher, types
 from aiogram.utils import executor
 from aiogram.types import ParseMode
+from aiohttp import ClientTimeout
+from aiogram import Bot
 from asupanmu_vip import msg_asupanmu_vip
 from kontol_monster import msg_kontol_monster
 from channel import CHANNELS
 
 API_TOKEN = '7520123514:AAG8JcQ6H0zjV_eTtK2V84jR0J1cf9wq6lg'
 
-# Membuat sesi aiohttp dengan request_timeout
-session = aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=60))
-bot = Bot(token=API_TOKEN, session=session)
+# Atur bot dengan timeout menggunakan ClientTimeout
+timeout = ClientTimeout(total=60)
+bot = Bot(token=API_TOKEN, timeout=timeout)
 dp = Dispatcher(bot)
 
 async def send_random_message():
@@ -45,7 +46,7 @@ async def send_random_message():
 
             # Tambahkan pesan "Message berhasil terkirim" ketika timer mencapai 1 detik
             if i == 1:
-                print("\nMessage send Successfully !")
+                print("\nMessage berhasil terkirim")
 
         print()  # Pindah ke baris baru setelah countdown selesai
 
@@ -56,8 +57,5 @@ async def start_handler(message: types.Message):
 async def on_startup(dp):
     asyncio.create_task(send_random_message())
 
-async def on_shutdown(dp):
-    await session.close()
-
 if __name__ == '__main__':
-    executor.start_polling(dp, on_startup=on_startup, on_shutdown=on_shutdown)
+    executor.start_polling(dp, on_startup=on_startup)
