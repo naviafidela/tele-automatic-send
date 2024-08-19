@@ -13,7 +13,7 @@ from channel import CHANNELS
 API_TOKEN = '7520123514:AAG8JcQ6H0zjV_eTtK2V84jR0J1cf9wq6lg'
 
 # Menambahkan request_timeout untuk memperpanjang waktu tunggu
-bot = Bot(token=API_TOKEN, request_timeout=120)
+bot = Bot(token=API_TOKEN, request_timeout=60)
 dp = Dispatcher(bot)
 
 async def send_random_message():
@@ -40,6 +40,10 @@ async def send_random_message():
             sys.stdout.write(f"\rSend the next message in: {i} seconds")
             sys.stdout.flush()
             time.sleep(1)
+
+            # Tambahkan pesan "Message berhasil terkirim" ketika timer mencapai 1 detik
+            if i == 1:
+                print("\nMessage berhasil terkirim")
 
         print()  # Pindah ke baris baru setelah countdown selesai
 
