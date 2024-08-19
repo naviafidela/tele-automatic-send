@@ -4,6 +4,7 @@ CHANNELS = [
     '@videy_bokep_indo',
     
     #01
+    '@DoodstreamViral2024_xx',
     '@ViralDoodstreamIndo_xx',
     '@VideoDoodstreamTerbaru_xx',
     '@DoodstreamBokepIndo_xx',
