@@ -12,7 +12,8 @@ from channel import CHANNELS
 
 API_TOKEN = '7520123514:AAG8JcQ6H0zjV_eTtK2V84jR0J1cf9wq6lg'
 
-bot = Bot(token=API_TOKEN)
+# Menambahkan request_timeout untuk memperpanjang waktu tunggu
+bot = Bot(token=API_TOKEN, request_timeout=120)
 dp = Dispatcher(bot)
 
 async def send_random_message():
@@ -35,8 +36,8 @@ async def send_random_message():
                 print(f"Failed to send message to {channel}: {e}")
 
         # Countdown timer
-        for i in range(7200, 0, -1):
-            sys.stdout.write(f"\rSend the next message in: {i} second")
+        for i in range(120, 0, -1):
+            sys.stdout.write(f"\rSend the next message in: {i} seconds")
             sys.stdout.flush()
             time.sleep(1)
 
