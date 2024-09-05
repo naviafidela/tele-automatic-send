@@ -10,7 +10,7 @@ from asupanmu_vip import msg_asupanmu_vip
 from kontol_monster import msg_kontol_monster
 from channel import CHANNELS
 
-API_TOKEN = '7520123514:AAG8JcQ6H0zjV_eTtK2V84jR0J1cf9wq6lg'
+API_TOKEN = '7389815762:AAF7CaSzrv5plm3ragGd9_UNjsSluRS-jqQ'
 
 # Set timeout lebih lama
 timeout = ClientTimeout(total=120)
