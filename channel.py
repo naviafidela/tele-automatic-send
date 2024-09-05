@@ -20,6 +20,9 @@ CHANNELS = [
     '@TeraboxUpdateIndo',
     '@TeraboxBokepIndonesia_xx',
     '@TeraboxViralTerbaru_xx',
+    '@azizah_viral_istri_arhan_xx',
+    '@video_azizah_zize_viral_xx',
+    '@azizah_istri_arhan_pratama_xx',
 
     #03
     '@VideyIndonesia',
@@ -29,6 +32,9 @@ CHANNELS = [
     '@VideyViral2024',
     '@VideyBokepIndo',
     '@VideyViralTerbaru',
+    '@istri_arhan_viral_xx',
+    '@video_azizah_salsha_virall',
+    '@azizah_salsha_video_virall',
 
     #04
     '@BokepIndoTemanKuliah',
@@ -38,6 +44,9 @@ CHANNELS = [
     '@BokepIndoSMPColmek',
     '@BokepIndoSMPSempit',
     '@BokepIndoKetahuanWarga',
+    '@video_azizah_reall',
+    '@bokep_azizah_salsha',
+    '@bokep_indo_azizah_istri_arhan',
 
     #05
     '@BokepIndoSMPTerbaru_xx',
@@ -47,4 +56,7 @@ CHANNELS = [
     '@BokepViralDewasaVideo_xx',
     '@AudreyDavisViralVideo_xx',
     '@BokepViralAudrey_xx',
+    '@azizah_zize_viral_full',
+    '@azizah_viral_terbaru',
+    '@azizah_salsha_yang_lagi_viral',
 ]
