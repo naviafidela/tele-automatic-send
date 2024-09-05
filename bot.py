@@ -7,7 +7,7 @@ from aiogram.utils import executor
 from aiogram.types import ParseMode
 from aiohttp import ClientTimeout
 from asupanmu_vip import msg_asupanmu_vip
-from kontol_monster import msg_kontol_monster
+from bokep2024_live import msg_bokep2024_live
 from channel import CHANNELS
 
 API_TOKEN = '7389815762:AAF7CaSzrv5plm3ragGd9_UNjsSluRS-jqQ'
@@ -19,7 +19,7 @@ dp = Dispatcher(bot)
 
 async def send_random_message():
     while True:
-        all_messages = msg_asupanmu_vip + msg_kontol_monster
+        all_messages = msg_asupanmu_vip + msg_bokep2024_live
 
         if len(all_messages) < len(CHANNELS) * 2:
             print("Jumlah link tidak cukup untuk semua channel.")
