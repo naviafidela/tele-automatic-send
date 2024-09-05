@@ -1,4 +1,4 @@
-msg_asupanmu_vip = [
+msg_bokep2024_live = [
 "https://bokep2024.live/video/miaa-483/",
 "https://bokep2024.live/video/roe-004/",
 "https://bokep2024.live/video/stars-769/",
