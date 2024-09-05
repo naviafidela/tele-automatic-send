@@ -4,13 +4,16 @@ CHANNELS = [
     '@videy_bokep_indo',
     
     #01
-    '@DoodstreamViral2024_xx',
     '@ViralDoodstreamIndo_xx',
     '@VideoDoodstreamTerbaru_xx',
-    '@DoodstreamBokepIndo_xx',
     '@DoodstreamIndonesiaViral_xx',
     '@DoodstreamViralTerbaru2024_xx',
-    '@DoodstreamViralTerbaru_xx',
+    '@azizah_salsha_video_viral',
+    '@teguh_suwandi_msbreewc_viral',
+    '@azizah_zize_viral',
+    '@azizah_istri_arhan_video_viral',
+    '@azizah_istri_arhan_viral_xx',
+    '@video_azizah_istri_arhan_viral_x',
 
     #02
     '@TeraboxYangLagiViral',
