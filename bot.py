@@ -3,7 +3,6 @@ import asyncio
 import sys
 import time
 from aiogram import Bot, Dispatcher, types
-from aiogram.types import parse_mode  # Correct import for parse_mode in Aiogram 3.x
 from aiogram.fsm.storage.memory import MemoryStorage
 from aiogram import Application
 from aiohttp import ClientTimeout
@@ -33,7 +32,7 @@ async def send_random_message():
             message_text = "\n\n".join(selected_links)
             try:
                 # Correct way to use parse_mode for HTML
-                await bot.send_message(chat_id=channel, text=message_text, parse_mode=parse_mode.ParseMode.HTML)
+                await bot.send_message(chat_id=channel, text=message_text, parse_mode="HTML")
             except Exception:
                 # Sembunyikan error dan lanjutkan
                 pass
