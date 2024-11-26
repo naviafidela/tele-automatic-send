@@ -3,17 +3,16 @@ import time
 import sys
 from telegram import Bot
 from telegram.constants import ParseMode
-from telegram.ext import Updater, CommandHandler, CallbackContext
+from telegram.ext import Application, CommandHandler
 from message import message
 from channel import CHANNELS
 
 API_TOKEN = '7508753099:AAEDEAogPWH2Z13TmfJn0efWKImPLTI-7h8'
 
 bot = Bot(token=API_TOKEN)
-updater = Updater(token=API_TOKEN, use_context=True)
-dispatcher = updater.dispatcher
+application = Application.builder().token(API_TOKEN).build()
 
-def send_random_message():
+async def send_random_message():
     while True:
         all_messages = message
 
@@ -28,7 +27,7 @@ def send_random_message():
             selected_links = selected_links_per_channel[idx]
             message_text = "\n\n".join(selected_links)
             try:
-                bot.send_message(chat_id=channel, text=message_text, parse_mode=ParseMode.HTML)
+                await bot.send_message(chat_id=channel, text=message_text, parse_mode=ParseMode.HTML)
             except Exception:
                 # Sembunyikan error dan lanjutkan
                 pass
@@ -45,13 +44,13 @@ def send_random_message():
 
         print()  # Pindah ke baris baru setelah countdown selesai
 
-def start(update, context):
-    update.message.reply_text("Bot ini aktif dan mengirim pesan setiap menit!")
+async def start(update, context):
+    await update.message.reply_text("Bot ini aktif dan mengirim pesan setiap menit!")
 
 start_handler = CommandHandler('start', start)
-dispatcher.add_handler(start_handler)
+application.add_handler(start_handler)
 
 if __name__ == '__main__':
-    send_random_message()
-    updater.start_polling()
-    updater.idle()
+    # Menjalankan task pengiriman pesan random secara paralel
+    application.job_queue.run_once(lambda _: send_random_message(), 0)
+    application.run_polling()
