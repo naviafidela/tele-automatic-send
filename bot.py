@@ -6,11 +6,10 @@ from aiogram import Bot, Dispatcher, types
 from aiogram.utils import executor
 from aiogram.types import ParseMode
 from aiohttp import ClientTimeout
-from asupanmu_vip import msg_asupanmu_vip
-from bokep2024_live import msg_bokep2024_live
+from message import message
 from channel import CHANNELS
 
-API_TOKEN = '7389815762:AAF7CaSzrv5plm3ragGd9_UNjsSluRS-jqQ'
+API_TOKEN = '7508753099:AAEDEAogPWH2Z13TmfJn0efWKImPLTI-7h8'
 
 # Set timeout lebih lama
 timeout = ClientTimeout(total=120)
@@ -19,7 +18,7 @@ dp = Dispatcher(bot)
 
 async def send_random_message():
     while True:
-        all_messages = msg_asupanmu_vip + msg_bokep2024_live
+        all_messages = message
 
         if len(all_messages) < len(CHANNELS) * 2:
             print("Jumlah link tidak cukup untuk semua channel.")
