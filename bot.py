@@ -3,8 +3,10 @@ import asyncio
 import sys
 import time
 from aiogram import Bot, Dispatcher, types
-from aiogram.utils import executor
 from aiogram.types import ParseMode
+from aiogram.fsm.storage.memory import MemoryStorage
+from aiogram.utils import logging
+from aiogram import Application
 from aiohttp import ClientTimeout
 from message import message
 from channel import CHANNELS
@@ -14,7 +16,7 @@ API_TOKEN = '7508753099:AAEDEAogPWH2Z13TmfJn0efWKImPLTI-7h8'
 # Set timeout lebih lama
 timeout = ClientTimeout(total=120)
 bot = Bot(token=API_TOKEN, timeout=timeout)
-dp = Dispatcher(bot)
+dp = Dispatcher(bot, storage=MemoryStorage())
 
 async def send_random_message():
     while True:
@@ -48,12 +50,22 @@ async def send_random_message():
 
         print()  # Pindah ke baris baru setelah countdown selesai
 
+# Command handler for /start
 @dp.message_handler(commands=['start'])
 async def start_handler(message: types.Message):
     await message.reply("Bot ini aktif dan mengirim pesan setiap menit!")
 
-async def on_startup(dp):
+async def on_startup(app: Application):
     asyncio.create_task(send_random_message())
 
+# Create an Application instance
+app = Application(bot=bot)
+
+# Register the startup function
+app.on_startup(on_startup)
+
+# Start the bot
 if __name__ == '__main__':
-    executor.start_polling(dp, on_startup=on_startup)
+    import logging
+    logging.basicConfig(level=logging.INFO)
+    app.run_polling()
