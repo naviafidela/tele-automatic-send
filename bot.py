@@ -3,7 +3,7 @@ import time
 import sys
 from telegram import Bot
 from telegram.constants import ParseMode
-from telegram.ext import Application, CommandHandler
+from telegram.ext import Application, CommandHandler, JobQueue
 from message import message
 from channel import CHANNELS
 
@@ -12,7 +12,7 @@ API_TOKEN = '7508753099:AAEDEAogPWH2Z13TmfJn0efWKImPLTI-7h8'
 bot = Bot(token=API_TOKEN)
 application = Application.builder().token(API_TOKEN).build()
 
-async def send_random_message():
+async def send_random_message(context):
     while True:
         all_messages = message
 
@@ -51,6 +51,7 @@ start_handler = CommandHandler('start', start)
 application.add_handler(start_handler)
 
 if __name__ == '__main__':
-    # Menjalankan task pengiriman pesan random secara paralel
-    application.job_queue.run_once(lambda _: send_random_message(), 0)
+    # Menambahkan JobQueue untuk menjalankan pengiriman pesan random
+    job_queue = application.job_queue
+    job_queue.run_once(lambda context: send_random_message(context), 0)  # Menjadwalkan pekerjaan
     application.run_polling()
