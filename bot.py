@@ -33,7 +33,7 @@ async def send_random_message(context: CallbackContext):
                 pass
 
         # Countdown timer
-        for i in range(7200, 0, -1):
+        for i in range(30, 0, -1):
             sys.stdout.write(f"\r[HTTP/1.1 200 OK] - Send the next message in: {i} seconds")
             sys.stdout.flush()
             time.sleep(1)
