@@ -57,5 +57,38 @@ CHANNELS = [
     '@bokep_indo_video10',
     '@bokep_indo_viral10',
     '@bokep_indo_threesome_terbaru',
+
+
+    '@azizah_istri_arhan_pratama_xx',
+    '@video_azizah_zize_viral_xx',
+    '@azizah_viral_istri_arhan_xx',
+    '@TeraboxUpdateIndo',
+    '@TeraboxBokepIndonesia_xx',
+    '@TeraboxViralTerbaru_xx',
+    '@TeraboxBokepTerbaru_xx',
+    '@TeraboxYangLagiViral',
+    '@TeraboxVideoViral2024',
+
+    '@video_azizah_salsha_virall',
+    '@istri_arhan_viral_xx',
+    '@VideyViralTerbaru',
+    '@VideyViral2024',
+    '@VideyBokepIndo',
+    '@VideyBokepIndoTerbaru',
+    '@VideyTiktokIndo',
+    '@VideyTiktokViral',
+    '@VideyIndonesia',
+    '@azizah_shalsa_video_virall',
+
+    'TES',
+    'TES',
+    'TES',
+    'TES',
+    'TES',
+    'TES',
+    'TES',
+    'TES',
+    'TES',
+    'TES',
     
 ]
