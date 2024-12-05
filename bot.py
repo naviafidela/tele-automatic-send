@@ -65,6 +65,15 @@ async def check(update, context):
         else:
             await update.message.reply_text("Pengiriman berikutnya akan segera dilakukan.")
 
+async def reset_job(context):
+    context.job_queue.scheduler.remove_all_jobs()  # Hapus semua pekerjaan
+    context.job_queue.run_once(send_random_message, 0)  # Jadwalkan ulang pekerjaan segera
+    print("Job telah direset dan dijadwalkan ulang.")
+
+# Tambahkan command handler untuk reset
+reset_handler = CommandHandler('reset', reset_job)
+application.add_handler(reset_handler)
+
 
 
 # Tambahkan handler untuk perintah /check
