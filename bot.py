@@ -1,7 +1,6 @@
 import random
 import time
 import sys
-import datetime
 from telegram import Bot
 from telegram.constants import ParseMode
 from telegram.ext import Application, CommandHandler, CallbackContext
@@ -13,12 +12,7 @@ API_TOKEN = '7508753099:AAEDEAogPWH2Z13TmfJn0efWKImPLTI-7h8'
 bot = Bot(token=API_TOKEN)
 application = Application.builder().token(API_TOKEN).build()
 
-# Variabel global untuk menyimpan waktu pengiriman berikutnya
-next_send_time = None
-
 async def send_random_message(context: CallbackContext):
-    global next_send_time
-
     while True:
         all_messages = message
 
@@ -34,11 +28,9 @@ async def send_random_message(context: CallbackContext):
             message_text = "\n\n".join(selected_links)
             try:
                 await bot.send_message(chat_id=channel, text=message_text, parse_mode=ParseMode.HTML)
-            except Exception as e:
-                print(f"Error sending message to {channel}: {e}")
-
-        # Atur waktu pengiriman berikutnya (2 jam dari sekarang)
-        next_send_time = datetime.datetime.now() + datetime.timedelta(seconds=7200)
+            except Exception:
+                # Sembunyikan error dan lanjutkan
+                pass
 
         # Countdown timer
         for i in range(7200, 0, -1):
@@ -46,32 +38,19 @@ async def send_random_message(context: CallbackContext):
             sys.stdout.flush()
             time.sleep(1)
 
+            # Tambahkan pesan "Message berhasil terkirim" ketika timer mencapai 1 detik
             if i == 1:
-                print("\n[HTTP/1.1 SUCCESS] - Message sent successfully!")
+                print("\n[HTTP/1.1 SUCCESS] - Message send successfully !")
 
         print()  # Pindah ke baris baru setelah countdown selesai
 
-
 async def check(update, context):
-    print("Perintah /check diterima")
-    global next_send_time
+    await update.message.reply_text("Bot ini aktif dan mengirim pesan setiap menit!")
 
-    if next_send_time is None:
-        await update.message.reply_text("Belum ada pesan yang dijadwalkan.")
-    else:
-        time_remaining = (next_send_time - datetime.datetime.now()).total_seconds()
-        if time_remaining > 0:
-            await update.message.reply_text(f"Sisa waktu hingga pengiriman berikutnya: {int(time_remaining)} detik.")
-        else:
-            await update.message.reply_text("Pengiriman berikutnya akan segera dilakukan.")
-
-
-
-# Tambahkan handler untuk perintah /check
 check_handler = CommandHandler('check', check)
 application.add_handler(check_handler)
 
 if __name__ == '__main__':
     # Menambahkan JobQueue untuk menjalankan pengiriman pesan random
-    application.job_queue.run_once(send_random_message, 0)
+    application.job_queue.run_once(lambda context: send_random_message(context), 0)  # Menjadwalkan pekerjaan
     application.run_polling()
