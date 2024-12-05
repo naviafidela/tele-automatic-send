@@ -53,6 +53,7 @@ async def send_random_message(context: CallbackContext):
 
 
 async def check(update, context):
+    print("Perintah /check diterima")
     global next_send_time
 
     if next_send_time is None:
@@ -63,6 +64,7 @@ async def check(update, context):
             await update.message.reply_text(f"Sisa waktu hingga pengiriman berikutnya: {int(time_remaining)} detik.")
         else:
             await update.message.reply_text("Pengiriman berikutnya akan segera dilakukan.")
+
 
 
 # Tambahkan handler untuk perintah /check
