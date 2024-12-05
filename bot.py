@@ -17,6 +17,7 @@ application = Application.builder().token(API_TOKEN).build()
 next_send_time = None
 
 async def send_random_message(context: CallbackContext):
+    """Mengirim pesan secara acak dan menjadwalkan ulang dalam 2 jam."""
     global next_send_time
 
     all_messages = message
@@ -64,6 +65,14 @@ async def reset_job(update, context):
     await update.message.reply_text("Job telah direset dan dijadwalkan ulang!")
 
 
+async def stop_jobs(update, context):
+    """Handler untuk perintah /stop"""
+    global next_send_time
+    context.job_queue.scheduler.remove_all_jobs()  # Hapus semua pekerjaan
+    next_send_time = None  # Reset waktu pengiriman
+    await update.message.reply_text("Semua jadwal telah dihentikan!")
+
+
 # Tambahkan handler untuk perintah /check
 check_handler = CommandHandler('check', check)
 application.add_handler(check_handler)
@@ -71,6 +80,10 @@ application.add_handler(check_handler)
 # Tambahkan handler untuk perintah /reset
 reset_handler = CommandHandler('reset', reset_job)
 application.add_handler(reset_handler)
+
+# Tambahkan handler untuk perintah /stop
+stop_handler = CommandHandler('stop', stop_jobs)
+application.add_handler(stop_handler)
 
 if __name__ == '__main__':
     # Menambahkan JobQueue untuk menjalankan pengiriman pesan random
