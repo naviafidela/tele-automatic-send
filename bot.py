@@ -1,3 +1,4 @@
+import os
 import random
 import time
 import sys
@@ -73,6 +74,30 @@ async def stop_jobs(update, context):
     await update.message.reply_text("Semua jadwal telah dihentikan!")
 
 
+async def git_pull(update, context):
+    """Handler untuk perintah /gitpull"""
+    global next_send_time
+    # Hentikan semua pekerjaan
+    context.job_queue.scheduler.remove_all_jobs()
+    next_send_time = None
+
+    # Beri tahu pengguna bahwa jadwal telah dihentikan
+    await update.message.reply_text("Menghentikan semua jadwal...")
+
+    # Jalankan git pull
+    try:
+        await update.message.reply_text("Menarik pembaruan dari repository...")
+        os.system("git pull")  # Menjalankan perintah git pull
+        await update.message.reply_text("Kode berhasil diperbarui. Memulai ulang proses...")
+    except Exception as e:
+        await update.message.reply_text(f"Terjadi kesalahan saat menarik pembaruan: {e}")
+        return
+
+    # Jalankan ulang pengiriman pesan otomatis
+    context.job_queue.run_once(send_random_message, 0)
+    await update.message.reply_text("Proses otomatis telah dimulai kembali!")
+
+
 # Tambahkan handler untuk perintah /check
 check_handler = CommandHandler('check', check)
 application.add_handler(check_handler)
@@ -84,6 +109,10 @@ application.add_handler(reset_handler)
 # Tambahkan handler untuk perintah /stop
 stop_handler = CommandHandler('stop', stop_jobs)
 application.add_handler(stop_handler)
+
+# Tambahkan handler untuk perintah /gitpull
+gitpull_handler = CommandHandler('gitpull', git_pull)
+application.add_handler(gitpull_handler)
 
 if __name__ == '__main__':
     # Menambahkan JobQueue untuk menjalankan pengiriman pesan random
