@@ -19,41 +19,30 @@ next_send_time = None
 async def send_random_message(context: CallbackContext):
     global next_send_time
 
-    while True:
-        all_messages = message
+    all_messages = message
 
-        if len(all_messages) < len(CHANNELS) * 2:
-            print("Jumlah link tidak cukup untuk semua channel.")
-            return
+    if len(all_messages) < len(CHANNELS) * 2:
+        print("Jumlah link tidak cukup untuk semua channel.")
+        return
 
-        random.shuffle(all_messages)
-        selected_links_per_channel = [all_messages[i:i + 2] for i in range(0, len(CHANNELS) * 2, 2)]
+    random.shuffle(all_messages)
+    selected_links_per_channel = [all_messages[i:i + 2] for i in range(0, len(CHANNELS) * 2, 2)]
 
-        for idx, channel in enumerate(CHANNELS):
-            selected_links = selected_links_per_channel[idx]
-            message_text = "\n\n".join(selected_links)
-            try:
-                await bot.send_message(chat_id=channel, text=message_text, parse_mode=ParseMode.HTML)
-            except Exception as e:
-                print(f"Error sending message to {channel}: {e}")
+    for idx, channel in enumerate(CHANNELS):
+        selected_links = selected_links_per_channel[idx]
+        message_text = "\n\n".join(selected_links)
+        try:
+            await bot.send_message(chat_id=channel, text=message_text, parse_mode=ParseMode.HTML)
+        except Exception as e:
+            print(f"Error sending message to {channel}: {e}")
 
-        # Atur waktu pengiriman berikutnya (2 jam dari sekarang)
-        next_send_time = datetime.datetime.now() + datetime.timedelta(seconds=7200)
-
-        # Countdown timer
-        for i in range(7200, 0, -1):
-            sys.stdout.write(f"\r[HTTP/1.1 200 OK] - Send the next message in: {i} seconds")
-            sys.stdout.flush()
-            time.sleep(1)
-
-            if i == 1:
-                print("\n[HTTP/1.1 SUCCESS] - Message sent successfully!")
-
-        print()  # Pindah ke baris baru setelah countdown selesai
+    # Atur waktu pengiriman berikutnya (2 jam dari sekarang)
+    next_send_time = datetime.datetime.now() + datetime.timedelta(seconds=7200)
+    print(f"Next message scheduled at: {next_send_time}")
 
 
 async def check(update, context):
-    print("Perintah /check diterima")
+    """Handler untuk perintah /check"""
     global next_send_time
 
     if next_send_time is None:
@@ -65,20 +54,23 @@ async def check(update, context):
         else:
             await update.message.reply_text("Pengiriman berikutnya akan segera dilakukan.")
 
-async def reset_job(context):
+
+async def reset_job(update, context):
+    """Handler untuk perintah /reset"""
+    global next_send_time
     context.job_queue.scheduler.remove_all_jobs()  # Hapus semua pekerjaan
     context.job_queue.run_once(send_random_message, 0)  # Jadwalkan ulang pekerjaan segera
-    print("Job telah direset dan dijadwalkan ulang.")
-
-# Tambahkan command handler untuk reset
-reset_handler = CommandHandler('reset', reset_job)
-application.add_handler(reset_handler)
-
+    next_send_time = None  # Reset waktu pengiriman
+    await update.message.reply_text("Job telah direset dan dijadwalkan ulang!")
 
 
 # Tambahkan handler untuk perintah /check
 check_handler = CommandHandler('check', check)
 application.add_handler(check_handler)
+
+# Tambahkan handler untuk perintah /reset
+reset_handler = CommandHandler('reset', reset_job)
+application.add_handler(reset_handler)
 
 if __name__ == '__main__':
     # Menambahkan JobQueue untuk menjalankan pengiriman pesan random
