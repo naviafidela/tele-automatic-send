@@ -1,7 +1,5 @@
 import os
 import random
-import time
-import sys
 import datetime
 from telegram import Bot
 from telegram.constants import ParseMode
@@ -16,6 +14,7 @@ application = Application.builder().token(API_TOKEN).build()
 
 # Variabel global untuk menyimpan waktu pengiriman berikutnya
 next_send_time = None
+
 
 async def send_random_message(context: CallbackContext):
     """Mengirim pesan secara acak dan menjadwalkan ulang dalam 2 jam."""
@@ -38,8 +37,9 @@ async def send_random_message(context: CallbackContext):
         except Exception as e:
             print(f"Error sending message to {channel}: {e}")
 
-    # Atur waktu pengiriman berikutnya (2 jam dari sekarang)
-    next_send_time = datetime.datetime.now() + datetime.timedelta(seconds=7200)
+    # Jadwalkan ulang pengiriman pesan 2 jam dari sekarang
+    next_send_time = datetime.datetime.now() + datetime.timedelta(seconds=120)
+    context.job_queue.run_once(send_random_message, 120)  # Jadwalkan ulang
     print(f"Next message scheduled at: {next_send_time}")
 
 
@@ -61,8 +61,8 @@ async def reset_job(update, context):
     """Handler untuk perintah /reset"""
     global next_send_time
     context.job_queue.scheduler.remove_all_jobs()  # Hapus semua pekerjaan
-    context.job_queue.run_once(send_random_message, 0)  # Jadwalkan ulang pekerjaan segera
     next_send_time = None  # Reset waktu pengiriman
+    context.job_queue.run_once(send_random_message, 0)  # Jadwalkan ulang segera
     await update.message.reply_text("Job telah direset dan dijadwalkan ulang!")
 
 
