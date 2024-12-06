@@ -38,8 +38,8 @@ async def send_random_message(context: CallbackContext):
             print(f"Error sending message to {channel}: {e}")
 
     # Jadwalkan ulang pengiriman pesan 2 jam dari sekarang
-    next_send_time = datetime.datetime.now() + datetime.timedelta(seconds=120)
-    context.job_queue.run_once(send_random_message, 120)  # Jadwalkan ulang
+    next_send_time = datetime.datetime.now() + datetime.timedelta(seconds=7200)
+    context.job_queue.run_once(send_random_message, 7200)  # Jadwalkan ulang
     print(f"Next message scheduled at: {next_send_time}")
 
 
