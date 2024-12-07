@@ -2,6 +2,7 @@
 CHANNELS = [
     '@videy_viral',
     '@videy_bokep_indo',
+    '@AsupanmuV1',
 
     '@film_jav_sub_indoo',
     '@njavtv_japan_jav',
