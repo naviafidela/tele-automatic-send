@@ -1,7 +1,7 @@
 import os
 import random
 import datetime
-from telegram import Bot, Update, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram import Bot, Update, InlineKeyboardButton, InlineKeyboardMarkup, InputMediaPhoto
 from telegram.constants import ParseMode
 from telegram.ext import Application, CommandHandler, MessageHandler, Filters, CallbackContext
 from message import message
@@ -94,11 +94,25 @@ async def git_pull(update, context):
 
 async def welcome_message(update: Update, context: CallbackContext):
     for member in update.message.new_chat_members:
-        keyboard = [[InlineKeyboardButton("Klik Saya!", url="https://example.com")]]
+        keyboard = [[InlineKeyboardButton("Buka Kunci", url=f"https://t.me/share/url?text=Asupan+SMA+💦+:+https://t.me/joinchat/7P2DFzD_s5I1MTM1+\n\n+PEMERSATU+BANGSA+💦+:+https://t.me/joinchat/vG-iFZLTulg2Zjhl")]]
         reply_markup = InlineKeyboardMarkup(keyboard)
 
-        welcome_message = await update.message.reply_text(
-            f"Selamat datang, {member.first_name}! 🎉", reply_markup=reply_markup
+        # URL gambar dengan efek blur (gunakan layanan eksternal untuk membuat gambar blur jika diperlukan)
+        image_url = "https://example.com/blur-image.jpg"
+
+        # Kirim pesan dengan gambar
+        welcome_message = await update.message.reply_photo(
+            photo=image_url,
+            caption=(
+                f"Selamat datang, {member.first_name}! 🎉\n\n"
+                "Semua Chat Disembunyikan Untuk Anggota Baru\n"
+                "Anda Harus Membuka Kunci Dengan Cara Bagikan Ke 3 - 5 Grup.\n\n"
+                "Total Media Grup :\nFoto = 75683\nVideo = 27603\n\n"
+                "Cara Buka Kunci Media\n"
+                "Klik Tombol Buka Kunci Dan Bagikan Ke 3 - 5 Grup Untuk Membuka.\n\n"
+                "Note : Jika Terverifikasi Anda Sudah Bisa Mengirim Pesan Dan Melihat Video Di Grup Ini."
+            ),
+            reply_markup=reply_markup
         )
 
         # Hapus pesan setelah 10 detik
