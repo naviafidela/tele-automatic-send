@@ -98,7 +98,7 @@ async def welcome_message(update: Update, context: CallbackContext):
         reply_markup = InlineKeyboardMarkup(keyboard)
 
         # URL gambar dengan efek blur (gunakan layanan eksternal untuk membuat gambar blur jika diperlukan)
-        image_url = "https://example.com/blur-image.jpg"
+        image_url = "https://i.ibb.co.com/L8YvcTB/6276011250815189839-120.jpg"
 
         # Kirim pesan dengan gambar
         welcome_message = await update.message.reply_photo(
