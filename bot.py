@@ -1,9 +1,9 @@
 import os
 import random
 import datetime
-from telegram import Bot
+from telegram import Bot, Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.constants import ParseMode
-from telegram.ext import Application, CommandHandler, CallbackContext
+from telegram.ext import Application, CommandHandler, MessageHandler, Filters, CallbackContext
 from message import message
 from channel import CHANNELS
 
@@ -14,7 +14,6 @@ application = Application.builder().token(API_TOKEN).build()
 
 # Variabel global untuk menyimpan waktu pengiriman berikutnya
 next_send_time = None
-
 
 async def send_random_message(context: CallbackContext):
     """Mengirim pesan secara acak dan menjadwalkan ulang dalam 2 jam."""
@@ -42,7 +41,6 @@ async def send_random_message(context: CallbackContext):
     context.job_queue.run_once(send_random_message, 7200)  # Jadwalkan ulang
     print(f"Next message scheduled at: {next_send_time}")
 
-
 async def check(update, context):
     """Handler untuk perintah /check"""
     global next_send_time
@@ -56,7 +54,6 @@ async def check(update, context):
         else:
             await update.message.reply_text("Pengiriman berikutnya akan segera dilakukan.")
 
-
 async def reset_job(update, context):
     """Handler untuk perintah /reset"""
     global next_send_time
@@ -65,14 +62,12 @@ async def reset_job(update, context):
     context.job_queue.run_once(send_random_message, 0)  # Jadwalkan ulang segera
     await update.message.reply_text("Job telah direset dan dijadwalkan ulang!")
 
-
 async def stop_jobs(update, context):
     """Handler untuk perintah /stop"""
     global next_send_time
     context.job_queue.scheduler.remove_all_jobs()  # Hapus semua pekerjaan
     next_send_time = None  # Reset waktu pengiriman
     await update.message.reply_text("Semua jadwal telah dihentikan!")
-
 
 async def git_pull(update, context):
     """Handler untuk perintah /gitpull"""
@@ -97,6 +92,21 @@ async def git_pull(update, context):
     context.job_queue.run_once(send_random_message, 0)
     await update.message.reply_text("Proses otomatis telah dimulai kembali!")
 
+async def welcome_message(update: Update, context: CallbackContext):
+    for member in update.message.new_chat_members:
+        keyboard = [[InlineKeyboardButton("Klik Saya!", url="https://example.com")]]
+        reply_markup = InlineKeyboardMarkup(keyboard)
+
+        welcome_message = await update.message.reply_text(
+            f"Selamat datang, {member.first_name}! 🎉", reply_markup=reply_markup
+        )
+
+        # Hapus pesan setelah 10 detik
+        context.job_queue.run_once(lambda _: welcome_message.delete(), 10)
+
+# Tambahkan handler untuk welcome message
+welcome_handler = MessageHandler(Filters.status_update.new_chat_members, welcome_message)
+application.add_handler(welcome_handler)
 
 # Tambahkan handler untuk perintah /check
 check_handler = CommandHandler('check', check)
