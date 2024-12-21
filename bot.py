@@ -93,14 +93,17 @@ async def git_pull(update, context):
     await update.message.reply_text("Proses otomatis telah dimulai kembali!")
 
 async def welcome_message(update: Update, context: CallbackContext):
+    print("Mendeteksi anggota baru...")
     for member in update.message.new_chat_members:
+        print(f"Anggota baru: {member.first_name}")  # Log nama anggota baru
+
         keyboard = [[InlineKeyboardButton("Buka Kunci", url=f"https://t.me/share/url?text=Asupan+SMA+💦+:+https://t.me/joinchat/7P2DFzD_s5I1MTM1+\n\n+PEMERSATU+BANGSA+💦+:+https://t.me/joinchat/vG-iFZLTulg2Zjhl")]]
         reply_markup = InlineKeyboardMarkup(keyboard)
 
-        # URL gambar dengan efek blur (gunakan layanan eksternal untuk membuat gambar blur jika diperlukan)
+        # URL gambar dengan efek blur
         image_url = "https://i.ibb.co.com/L8YvcTB/6276011250815189839-120.jpg"
 
-        # Kirim pesan dengan gambar
+        # Kirim pesan sambutan dengan gambar
         welcome_message = await update.message.reply_photo(
             photo=image_url,
             caption=(
@@ -117,6 +120,7 @@ async def welcome_message(update: Update, context: CallbackContext):
 
         # Hapus pesan setelah 10 detik
         context.job_queue.run_once(lambda _: welcome_message.delete(), 10)
+
 
 # Tambahkan handler untuk welcome message
 welcome_handler = MessageHandler(Filters.status_update.new_chat_members, welcome_message)
