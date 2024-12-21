@@ -1,9 +1,9 @@
 import os
 import random
 import datetime
-from telegram import Bot, Update, InlineKeyboardButton, InlineKeyboardMarkup, InputMediaPhoto
+from telegram import Bot
 from telegram.constants import ParseMode
-from telegram.ext import Application, CommandHandler, MessageHandler, Filters, CallbackContext
+from telegram.ext import Application, CommandHandler, CallbackContext
 from message import message
 from channel import CHANNELS
 
@@ -14,6 +14,7 @@ application = Application.builder().token(API_TOKEN).build()
 
 # Variabel global untuk menyimpan waktu pengiriman berikutnya
 next_send_time = None
+
 
 async def send_random_message(context: CallbackContext):
     """Mengirim pesan secara acak dan menjadwalkan ulang dalam 2 jam."""
@@ -41,6 +42,7 @@ async def send_random_message(context: CallbackContext):
     context.job_queue.run_once(send_random_message, 7200)  # Jadwalkan ulang
     print(f"Next message scheduled at: {next_send_time}")
 
+
 async def check(update, context):
     """Handler untuk perintah /check"""
     global next_send_time
@@ -54,6 +56,7 @@ async def check(update, context):
         else:
             await update.message.reply_text("Pengiriman berikutnya akan segera dilakukan.")
 
+
 async def reset_job(update, context):
     """Handler untuk perintah /reset"""
     global next_send_time
@@ -62,12 +65,14 @@ async def reset_job(update, context):
     context.job_queue.run_once(send_random_message, 0)  # Jadwalkan ulang segera
     await update.message.reply_text("Job telah direset dan dijadwalkan ulang!")
 
+
 async def stop_jobs(update, context):
     """Handler untuk perintah /stop"""
     global next_send_time
     context.job_queue.scheduler.remove_all_jobs()  # Hapus semua pekerjaan
     next_send_time = None  # Reset waktu pengiriman
     await update.message.reply_text("Semua jadwal telah dihentikan!")
+
 
 async def git_pull(update, context):
     """Handler untuk perintah /gitpull"""
@@ -93,7 +98,6 @@ async def git_pull(update, context):
     await update.message.reply_text("Proses otomatis telah dimulai kembali!")
 
 
-
 # Tambahkan handler untuk perintah /check
 check_handler = CommandHandler('check', check)
 application.add_handler(check_handler)
@@ -114,3 +118,4 @@ if __name__ == '__main__':
     # Menambahkan JobQueue untuk menjalankan pengiriman pesan random
     application.job_queue.run_once(send_random_message, 0)
     application.run_polling()
+
